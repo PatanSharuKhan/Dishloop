@@ -20,8 +20,7 @@ export default function Home() {
     <div>
       <h1>DishLoop</h1>
       <h1>Menu</h1>
-
-      <ul>
+      <ul data-testid="menu-list">
         {products.map((prod: Product) => (
           <li key={prod?.id}>
             <h1>{prod.name}</h1>
