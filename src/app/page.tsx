@@ -18,8 +18,8 @@ export default function Home() {
   }, [])
   return (
     <div>
-      <h1>Amazon Clone</h1>
-      <h1>Products</h1>
+      <h1>DishLoop</h1>
+      <h1>Menu</h1>
 
       <ul>
         {products.map((prod: Product) => (
