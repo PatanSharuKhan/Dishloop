@@ -1,5 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
+import Navbar from "./components/Navbar"
+import RestaurantItems from "./components/RestaurantItems"
 
 interface Product {
   id: number
@@ -18,15 +20,8 @@ export default function Home() {
   }, [])
   return (
     <div>
-      <h1>DishLoop</h1>
-      <h1>Menu</h1>
-      <ul data-testid="menu-list">
-        {products.map((prod: Product) => (
-          <li key={prod?.id}>
-            <h1>{prod.name}</h1>
-          </li>
-        ))}
-      </ul>
+      <Navbar/>
+      <RestaurantItems/>
     </div>
   )
 }
