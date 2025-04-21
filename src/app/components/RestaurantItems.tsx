@@ -1,5 +1,7 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import Spinner from "./Spinner"
+import Search from "./Search"
 
 type Restaurant = {
   _id: string
@@ -12,6 +14,7 @@ const RestaurantItems = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
   const [status, setStatus] = useState("loading")
   const [error, setError] = useState("")
+  const [searchName, setSearchName] = useState("")
 
   useEffect(() => {
     fetch("http://localhost:3000/restaurants")
@@ -29,15 +32,32 @@ const RestaurantItems = () => {
       })
   }, [])
 
-  if (status === "loading") return <p>Loading ...</p>
+  const filteredRestaurants = restaurants.filter((restaurant) =>
+    restaurant.name.includes(searchName)
+  )
+
+  const handleChange = (e: ChangeEvent) => {
+    e.preventDefault()
+    setSearchName((e.target as HTMLInputElement).value)
+  }
+
+  if (status === "loading") return <Spinner />
   if (status === "error") return <p>Load Restaurants: {error}</p>
 
   return (
     <div className="p-2 md:p-0">
       <h1 className="mb-2 ps-2 text-2xl">Discover Restaurants</h1>
+      <Search
+        placeholder="Search Restaurant Name"
+        onChange={(e) => handleChange(e)}
+        value={searchName}
+      />
       <div className="grid md:grid-cols-2">
-        {restaurants.map((restaurant) => (
-          <div className="mb-2 hover:shadow-xl p-2 rounded-xl" key={restaurant._id}>
+        {filteredRestaurants.map((restaurant) => (
+          <div
+            className="mb-2 hover:shadow-xl p-2 rounded-xl"
+            key={restaurant._id}
+          >
             <img
               src="/restaurant.jpg"
               alt="Restaurant Image"

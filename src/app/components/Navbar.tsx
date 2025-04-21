@@ -1,14 +1,6 @@
-"use client"
-import React, { useEffect } from "react"
+import React from "react"
 
 const Navbar = () => {
-  useEffect(() => {
-    const init = async () => {
-      const { Collapse, Dropdown, initTWE } = await import("tw-elements")
-      initTWE({ Collapse, Dropdown })
-    }
-    init()
-  }, [])
   return (
     <nav className="flex-no-wrap relative flex w-full items-center justify-between py-2 shadow-dark-mild dark:bg-surface-dark lg:flex-wrap lg:justify-start lg:py-4">
       <div className="flex w-full flex-wrap items-center justify-between px-3">
