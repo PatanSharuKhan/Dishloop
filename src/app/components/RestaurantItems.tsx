@@ -46,7 +46,10 @@ const RestaurantItems = () => {
 
   return (
     <div className="p-2 md:p-0">
-      <h1 className="mb-2 ps-2 text-2xl">Discover Restaurants</h1>
+      <div className="flex justify-between items-center mb-2">
+        <h1 className="mb-2 ps-2 text-2xl">Discover Restaurants</h1>
+        <a href="/create-restaurant" className="border p-1 rounded-xl cursor-pointer">Add</a>
+      </div>
       <Search
         placeholder="Search Restaurant Name"
         onChange={(e) => handleChange(e)}
