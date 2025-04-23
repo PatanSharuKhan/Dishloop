@@ -24,6 +24,7 @@ const Signin = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include" as RequestCredentials,
       body: JSON.stringify(paylaod),
     }
     fetch("http://localhost:3000/signin", options)
@@ -32,7 +33,6 @@ const Signin = () => {
       })
       .then((data) => {
         if (data.jwtToken) {
-          localStorage.setItem("token", JSON.stringify(data.jwtToken))
           window.location.replace("/")
         } else {
           setError(data.error)
