@@ -17,7 +17,7 @@ const RestaurantItems = () => {
   const [searchName, setSearchName] = useState("")
 
   useEffect(() => {
-    fetch("http://localhost:3000/restaurants")
+    fetch("http://localhost:3000/restaurants", { credentials: 'include' as RequestCredentials })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to Fetch")
         return res.json()
