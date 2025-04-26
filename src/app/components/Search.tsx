@@ -18,7 +18,7 @@ const Search = ({
   return (
     <input
       type="text"
-      className={`border rounded p-2 w-full ${classProps}`}
+      className={`border rounded p-2 w-full border-gray-500 mb-2 ${classProps}`}
       placeholder={placeholder}
       onChange={onChange}
       value={value}
