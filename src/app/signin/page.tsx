@@ -1,5 +1,6 @@
 "use client"
 import React, { ChangeEvent, FormEvent, useState } from "react"
+import { UserService } from "../utils/userService"
 
 const Signin = () => {
   const [email, setEmail] = useState("")
@@ -15,30 +16,39 @@ const Signin = () => {
     }
   }
 
-  const handleFormSubmit = (e: FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault()
+
     setError("")
     const paylaod = { email, password }
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include" as RequestCredentials,
-      body: JSON.stringify(paylaod),
+    try {
+      const response = await UserService().signin(paylaod)
+      if (response.message) {
+        window.location.replace("/")
+      }
+    } catch (err: any) {
+      setError(err.message)
     }
-    fetch("http://localhost:3000/signin", options)
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        if (data.jwtToken) {
-          window.location.replace("/")
-        } else {
-          setError(data.error)
-        }
-      })
-      .catch((err) => setError(err.message))
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   credentials: "include" as RequestCredentials,
+    //   body: JSON.stringify(paylaod),
+    // }
+    // fetch("http://localhost:3000/signin", options)
+    //   .then((res) => {
+    //     return res.json()
+    //   })
+    //   .then((data) => {
+    //     if (data.jwtToken) {
+    //       window.location.replace("/")
+    //     } else {
+    //       setError(data.error)
+    //     }
+    //   })
+    //   .catch((err) => setError(err.message))
   }
 
   return (

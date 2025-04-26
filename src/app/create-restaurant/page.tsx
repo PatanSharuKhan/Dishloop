@@ -5,13 +5,38 @@ import React, {
   FormEvent as ReactFormEvent,
   useMemo,
   useState,
+  useEffect,
 } from "react"
 import Navbar from "../components/Navbar"
+import UserRestaurants from "../components/UserRestaurants"
+
+export interface RestaurantObject {
+  _id: string
+  name: string
+  address: string
+}
 
 const CreateRestaurant = () => {
+  const [restaurants, setRestaurants] = useState<RestaurantObject[]>([])
   const [name, setName] = useState("")
   const [address, setAddress] = useState("")
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    fetch("http://localhost:3000/restaurants", {
+      credentials: "include" as RequestCredentials,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.restaurants) {
+          setRestaurants(data.restaurants)
+        }
+        if (data.error) {
+          setError(data.error)
+        }
+      })
+      .catch((err) => setError(err.message))
+  }, [])
 
   const handleInputChange = (e: ChangeEvent) => {
     e.preventDefault()
@@ -24,9 +49,9 @@ const CreateRestaurant = () => {
   }
 
   const clearFields = () => {
-    setName('')
-    setAddress('')
-    setError('')
+    setName("")
+    setAddress("")
+    setError("")
   }
 
   const inputClasses = useMemo(() => "border w-full p-1 rounded mb-3", [])
@@ -54,7 +79,8 @@ const CreateRestaurant = () => {
           setError(data.error)
         } else {
           clearFields()
-          alert('Restaurant Created Successfully')
+          setRestaurants([data.data, ...restaurants])
+          alert("Restaurant Created Successfully")
         }
       })
       .catch((err) => setError(err.message))
@@ -69,7 +95,7 @@ const CreateRestaurant = () => {
         onSubmit={handleFormSubmit}
       >
         <input
-          className={`${inputClasses}`}
+          className={`${inputClasses} border-gray-400`}
           type="text"
           placeholder="Enter Restaurant Name"
           name="name"
@@ -78,7 +104,7 @@ const CreateRestaurant = () => {
           required
         />
         <input
-          className={`${inputClasses}`}
+          className={`${inputClasses} border-gray-400`}
           type="text"
           placeholder="Enter Address"
           name="address"
@@ -102,6 +128,7 @@ const CreateRestaurant = () => {
         </div>
         <p className="text-red-800">{error}</p>
       </form>
+      <UserRestaurants restaurants={restaurants} />
     </>
   )
 }
