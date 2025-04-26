@@ -8,6 +8,7 @@ export const API_PATHS = {
         BY_ID: (id: string) => `${BASE_URL}/restaurants/${id}`,
         UPDATE: (id: string) => `${BASE_URL}/restaurants/${id}`,
         DELETE: (id: string) => `${BASE_URL}/restaurants/${id}`,
+        MY_RESTAURANTS: `${BASE_URL}/restaurants/my-restaurants`
     },
 
     USERS: {

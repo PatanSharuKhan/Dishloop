@@ -9,11 +9,13 @@ import React, {
 } from "react"
 import Navbar from "../components/Navbar"
 import UserRestaurants from "../components/UserRestaurants"
+import { RestaurantService } from "../utils/restaurantService"
 
 export interface RestaurantObject {
   _id: string
   name: string
   address: string
+  createdAt: string
 }
 
 const CreateRestaurant = () => {
@@ -22,20 +24,17 @@ const CreateRestaurant = () => {
   const [address, setAddress] = useState("")
   const [error, setError] = useState("")
 
+  const loadMyRestaurants = async () => {
+    try {
+      const response = await RestaurantService().myRestaurants()
+      if (response.restaurants) setRestaurants(response.restaurants)
+    } catch (err: any) {
+      setError(err.message)
+    }
+  }
+
   useEffect(() => {
-    fetch("http://localhost:3000/restaurants", {
-      credentials: "include" as RequestCredentials,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.restaurants) {
-          setRestaurants(data.restaurants)
-        }
-        if (data.error) {
-          setError(data.error)
-        }
-      })
-      .catch((err) => setError(err.message))
+    loadMyRestaurants()
   }, [])
 
   const handleInputChange = (e: ChangeEvent) => {
@@ -61,29 +60,17 @@ const CreateRestaurant = () => {
     clearFields()
   }
 
-  const handleFormSubmit = (e: ReactFormEvent) => {
+  const handleFormSubmit = async (e: ReactFormEvent) => {
     e.preventDefault()
     const payload = { name, address }
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include" as RequestCredentials,
-      body: JSON.stringify(payload),
+    try {
+      const response = await RestaurantService().create(payload)
+      if (response.restaurant) {
+        setRestaurants((prev) => [response.restaurant, ...prev])
+      }
+    } catch (err: any) {
+      setError(err.message)
     }
-    fetch("http://localhost:3000/restaurants", options)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error)
-        } else {
-          clearFields()
-          setRestaurants([data.data, ...restaurants])
-          alert("Restaurant Created Successfully")
-        }
-      })
-      .catch((err) => setError(err.message))
   }
 
   return (

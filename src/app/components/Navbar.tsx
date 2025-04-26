@@ -5,7 +5,7 @@ import { UserService } from "../utils/userService"
 const Navbar = () => {
   const handleLogout = async () => {
     await UserService().signout()
-    window.location.replace('/signin')
+    window.location.replace("/signin")
   }
 
   return (
@@ -20,7 +20,7 @@ const Navbar = () => {
             <div className="w-[200px] min-h-[40px] border p-2 rounded border-gray-500 text-gray-300">
               <ul>
                 <li className="hover:text-gray-200 hover:bg-gray-700 cursor-pointer p-1 rounded">
-                  Dashboard
+                  <a href="/">Home</a>
                 </li>
                 <li
                   className="hover:text-gray-200 hover:bg-gray-700 cursor-pointer p-1 rounded"
